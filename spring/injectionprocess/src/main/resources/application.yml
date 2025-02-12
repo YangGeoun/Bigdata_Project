@@ -1,0 +1,23 @@
+server:
+  servlet:
+    context-path: /api
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+  datasource:
+    url: ENC(5zdr2LqiaeYhpcp5dGS1BBmgspH0010HFvaWiQgzDX3p//fFCt7nLfl3aJSgzC9u)
+    username: ENC(MmU/+G/rcOUBhy+r9Zl7EQ==)
+    password: ENC(JogjoVGnOUQjn6Jj3s5+L1HveOumNPyd)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 30
+
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+      ddl-auto: none
