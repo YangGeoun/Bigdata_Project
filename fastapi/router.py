@@ -36,7 +36,7 @@ async def get_products(date: str, db: Session = Depends(get_db)):
     return res
 
 
-# @router.post("/data")
-# async def load_data(db: Session = Depends(get_db)):
-#     res = service.load_data(db)
-#     return res
+@router.post("/data")
+async def load_data(db: Session = Depends(get_db)):
+    res = service.load_data(db)
+    return res

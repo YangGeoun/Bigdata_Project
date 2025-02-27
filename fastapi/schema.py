@@ -7,6 +7,7 @@ class ConditionData(BaseModel):
     id: int
     time_stamp: datetime
     part_name: Optional[str]
+    is_passed: Optional[bool]
     injection_time: Optional[float]
     filling_time: Optional[float]
     plasticizing: Optional[float]

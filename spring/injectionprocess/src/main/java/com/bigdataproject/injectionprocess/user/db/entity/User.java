@@ -1,44 +1,37 @@
 package com.bigdataproject.injectionprocess.user.db.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+
 @Entity
 @Table(name = "user")
+@Builder
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 100)
-    private String name;
-
-    @Column(length = 20)
-    private String role;
-
-    @Column(length = 100)
-    private String email;
+    @Column(length = 255)
+    private String username;
 
     @Column(length = 100)
     private String password;
 
-    private LocalDateTime createDate;
+    @Column(length = 100)
+    private String name;
 
-    @Column(length = 255)
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private UserRole role;
 
-    @Column(length = 255)
-    private String providerId;
-
-    @Column(length = 255)
-    private String username;
+    @Column(length = 100)
+    private String email;
 }

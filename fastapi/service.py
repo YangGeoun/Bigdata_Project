@@ -1,5 +1,5 @@
 # from models import SpotInfo, SpotDetail, SpotDescription
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from models import User, PassOrFail, Condition
 from sqlalchemy import func
 import pandas as pd
@@ -22,6 +22,7 @@ def load_data(db: Session):
         condition = Condition(
             time_stamp=datetime.strptime(row['TimeStamp'], "%Y-%m-%d %H:%M:%S"),
             part_name=row['PART_NAME'],
+            is_passed=bool(True if row['PassOrFail'] == "Y" else False),
             injection_time=float(row['Injection_Time']),
             filling_time=float(row['Filling_Time']),
             plasticizing=float(row['Plasticizing_Time']),
@@ -53,34 +54,36 @@ def load_data(db: Session):
             condition=condition,
             is_pass=bool(True if row['PassOrFail'] == "Y" else False),
             reason=(row['Reason']),
+            part_name=(row['PART_NAME']),
+            time_stamp=datetime.strptime(row['TimeStamp'], "%Y-%m-%d %H:%M:%S")
         )
         db.add(pass_or_fail)
-        
     # 변경사항 커밋
     db.commit()
     return condition
 
-def get_condition(db :Session, date, partName):
-    query = db.query(Condition)
 
+def get_condition(db: Session, date, partName):
+    query = db.query(Condition).options(joinedload(Condition.pass_or_fail))
+    
     if date:
-        date = list(map(int, date.split("-")))
-        start_date = datetime(date[0], date[1], date[2])
+        year, month, day = map(int, date.split("-"))
+        start_date = datetime(year, month, day)
         end_date = start_date + timedelta(days=1)
         query = query.filter(
             Condition.time_stamp >= start_date,
             Condition.time_stamp < end_date
         )
-
+    
     if partName:
         query = query.filter(Condition.part_name == partName)
-
+    
     total_count = query.count()
     data = query.all()
-
+    
     response = {
         "total_count": total_count,
-        "date_range": f"{start_date.date()} ~ {end_date.date()}", 
+        "date_range": f"{start_date.date()} ~ {end_date.date()}",
         "data": data
     }
     return response

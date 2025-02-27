@@ -28,6 +28,7 @@ class Condition(Base):
     __tablename__ = 'Condition'
     id = Column(BigInteger, primary_key=True, nullable=False)
     time_stamp = Column(DateTime)
+    is_passed = Column(Boolean)
     part_name = Column(String(100))
     injection_time = Column(Float)
     filling_time = Column(Float)
